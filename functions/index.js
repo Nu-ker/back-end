@@ -121,23 +121,35 @@ exports.Food = functions.https.onRequest((req, res) => {
             protein:req.body.protein,
             imgUrl:req.body.imgUrl
         })
-        res.send({
-            msg: "POST SUCCESS"
+        return User.child(req.headers['uid']).once('value',snapshot=>{
+            User.child(req.headers['uid']).child('dates/'+moment().format('DD-MM-YYYY')).update({
+                calories: Number(snapshot.val()['calories']) - Number(req.body.calories)
+            })
+            res.send({
+                msg: "POST SUCCESS"
+            })
         })
     }else if(req.method === 'PUT') {
-        Users.child(req.headers['uid']).child('dates/'+moment().format('DD-MM-YYYY')).child('foods/'+req.headers['foodid']).update({
-            name: req.body.name,
-            calories: req.body.calories,
-            total_fat:req.body.total_fat,
-            saturated_fat:req.body.saturated_fat,
-            cholesterol:req.body.cholesterol,
-            total_carbohydrate:req.body.total_carbohydrate,
-            sugars:req.body.sugars,
-            protein:req.body.protein,
-            imgUrl:req.body.imgUrl
-        })
-        res.send({
-            msg: 'SUCCESS PUT'
+        return Users.child(req.headers['uid']).child('dates/'+moment().format('DD-MM-YYYY')).child('foods/'+req.headers['foodid']).on('value',snapshotFood=>{
+            return User.child(req.headers['uid']).child('dates/'+moment().format('DD-MM-YYYY')).once('value',snapshot=>{
+                User.child(req.headers['uid']).child('dates/'+moment().format('DD-MM-YYYY')).update({
+                    calories: ((Number(snapshot.val()['calories'])+ snapshotFood.val()['calories']) - Number(req.body.calories))
+                })
+                Users.child(req.headers['uid']).child('dates/'+moment().format('DD-MM-YYYY')).child('foods/'+req.headers['foodid']).update({
+                    name: req.body.name,
+                    calories: req.body.calories,
+                    total_fat:req.body.total_fat,
+                    saturated_fat:req.body.saturated_fat,
+                    cholesterol:req.body.cholesterol,
+                    total_carbohydrate:req.body.total_carbohydrate,
+                    sugars:req.body.sugars,
+                    protein:req.body.protein,
+                    imgUrl:req.body.imgUrl
+                })
+                res.send({
+                    msg: "POST SUCCESS"
+                })
+            })
         })
     }else if(req.method === 'DELETE'){
         Users.child(req.headers['uid']).child('dates/'+moment().format('DD-MM-YYYY')).child('foods/'+req.headers['foodid']).remove()
