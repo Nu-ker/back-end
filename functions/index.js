@@ -5,10 +5,6 @@ const moment = require('moment')
 admin.initializeApp(functions.config().firebase);
 var Users = admin.database().ref('Users')
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-// email,name,weight,weightTarget,height,age,activity,kalories,kaloriesDay,status
-
 exports.helloWorld = functions.https.onRequest((req, res) => {
     res.json("Hello from Firebase!");
 });
