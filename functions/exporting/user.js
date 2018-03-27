@@ -30,6 +30,7 @@ module.exports = (functions, admin, Users, moment )=>{
             })
         }else if(req.method === 'PUT') {
             if(req.body.sex==='male'){
+                
                 calories = Math.floor(66.4730 + (13.7516 * Number(req.body.weight)) + (5 * Number(req.body.height)) - (6.7550 * Number(req.body.age))* Number(req.body.activity))
             }else{
                 calories =  Math.floor(655.0955 + (9.5634 * Number(req.body.weight)) + (1.8496 * Number(req.body.height)) - (4.6756 * Number(req.body.age)) * Number(req.body.activity))
