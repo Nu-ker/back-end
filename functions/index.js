@@ -17,7 +17,6 @@ exports.UserLogin = ExpuserLogin(functions, admin, Users, moment)
 exports.User = Expuser(functions, admin, Users, moment)
 exports.DateCheck = ExpdateCheck(functions, admin, Users, moment)
 exports.Food = Expfood(functions, admin, Users, moment)
-
 //GRAPHQL
 
 const app = express();

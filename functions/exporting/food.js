@@ -1,6 +1,8 @@
 module.exports = (functions, admin, Users, moment )=>{
     return functions.https.onRequest((req, res) => {
         if(req.method === 'POST'){
+            console.log('req.body',req.body);
+            console.log('uid', req.headers['uid']);
             Users.child(req.headers['uid']).child('dates/'+moment().format('MMMM-DD-YYYY')).child('foods').push({
                 name: req.body.name,
                 calories: req.body.calories,
